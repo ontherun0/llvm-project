@@ -32,6 +32,7 @@ add_mlir_library(MLIRTestTransforms
   TestMakeIsolatedFromAbove.cpp
   TestSingleFold.cpp
   TestTransformsOps.cpp
+  TestMyPass.cpp
   ${MLIRTestTransformsPDLSrc}
 
   EXCLUDE_FROM_LIBMLIR

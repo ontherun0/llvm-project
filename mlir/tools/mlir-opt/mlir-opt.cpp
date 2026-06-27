@@ -164,6 +164,10 @@ void registerTestVectorReductionToSPIRVDotProd();
 void registerTestVulkanRunnerPipeline();
 void registerTestWrittenToPass();
 void registerTestXeGPULowerings();
+void registerTestCountAddI();
+void registerTestSimplifyAddIWithZero();
+void registerTestSeniorSimplifyAddIWithZero();
+void registerTestSimplifyRedundantTranspose();
 #if MLIR_ENABLE_PDL_IN_PATTERNMATCH
 void registerTestDialectConversionPasses();
 void registerTestPDLByteCodePass();
@@ -314,6 +318,10 @@ static void registerTestPasses() {
   mlir::test::registerTestVulkanRunnerPipeline();
   mlir::test::registerTestWrittenToPass();
   mlir::test::registerTestXeGPULowerings();
+  mlir::test::registerTestCountAddI();
+  mlir::test::registerTestSimplifyAddIWithZero();
+  mlir::test::registerTestSeniorSimplifyAddIWithZero();
+  mlir::test::registerTestSimplifyRedundantTranspose();
 #if MLIR_ENABLE_PDL_IN_PATTERNMATCH
   mlir::test::registerTestDialectConversionPasses();
   mlir::test::registerTestPDLByteCodePass();
