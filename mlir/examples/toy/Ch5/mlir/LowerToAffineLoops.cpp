@@ -136,6 +136,31 @@ struct BinaryOpLowering : public OpConversionPattern<BinaryOp> {
 };
 using AddOpLowering = BinaryOpLowering<toy::AddOp, arith::AddFOp>;
 using MulOpLowering = BinaryOpLowering<toy::MulOp, arith::MulFOp>;
+using SubOpLowering = BinaryOpLowering<toy::SubOp, arith::SubFOp>;
+
+//===----------------------------------------------------------------------===//
+// ToyToAffine Conversion Patterns: Square operations
+//===----------------------------------------------------------------------===//
+
+struct SquareOpLowering : public OpConversionPattern<toy::SquareOp> {
+  using OpConversionPattern<toy::SquareOp>::OpConversionPattern;
+  using OpAdaptor = typename OpConversionPattern<toy::SquareOp>::OpAdaptor;
+
+  LogicalResult
+  matchAndRewrite(toy::SquareOp op, OpAdaptor adaptor,
+                  ConversionPatternRewriter &rewriter) const final {
+    auto loc = op->getLoc();
+    lowerOpToLoops(op, rewriter, [&](OpBuilder &builder, ValueRange loopIvs) {
+      // Generate loads for the element of 'input' at the inner loop.
+      auto loadedInput = affine::AffineLoadOp::create(
+          builder, loc, adaptor.getInput(), loopIvs);
+
+      // Create the mul operation performed on the loaded values.
+      return arith::MulFOp::create(builder, loc, loadedInput, loadedInput);
+    });
+    return success();
+  }
+};
 
 //===----------------------------------------------------------------------===//
 // ToyToAffine Conversion Patterns: Constant operations
@@ -195,6 +220,15 @@ struct ConstantOpLowering : public OpConversionPattern<toy::ConstantOp> {
         storeElements(dimension + 1);
         indices.pop_back();
       }
+
+      // [Test for backward store] Otherwise, iterate over the current dimension and add the indices to
+      // the list.
+      // uint64_t e = valueShape[dimension];
+      // for (uint64_t i = e; i > 0; i--) {
+      //   indices.push_back(constantIndices[i - 1]);
+      //   storeElements(dimension + 1);
+      //   indices.pop_back();
+      // }
     };
 
     // Start the element storing recursion from the first dimension.
@@ -350,8 +384,8 @@ void ToyToAffineLoweringPass::runOnOperation() {
   // the set of patterns that will lower the Toy operations.
   RewritePatternSet patterns(&getContext());
   patterns.add<AddOpLowering, ConstantOpLowering, FuncOpLowering, MulOpLowering,
-               PrintOpLowering, ReturnOpLowering, TransposeOpLowering>(
-      &getContext());
+               PrintOpLowering, ReturnOpLowering, TransposeOpLowering,
+               SubOpLowering, SquareOpLowering>(&getContext());
 
   // With the target and rewrite patterns defined, we can now attempt the
   // conversion. The conversion will signal failure if any of our `illegal`
