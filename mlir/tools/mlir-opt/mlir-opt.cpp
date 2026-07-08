@@ -164,6 +164,7 @@ void registerTestVectorReductionToSPIRVDotProd();
 void registerTestVulkanRunnerPipeline();
 void registerTestWrittenToPass();
 void registerTestXeGPULowerings();
+void registerTestArithIndexCastLowering();
 #if MLIR_ENABLE_PDL_IN_PATTERNMATCH
 void registerTestDialectConversionPasses();
 void registerTestPDLByteCodePass();
@@ -314,6 +315,7 @@ static void registerTestPasses() {
   mlir::test::registerTestVulkanRunnerPipeline();
   mlir::test::registerTestWrittenToPass();
   mlir::test::registerTestXeGPULowerings();
+  mlir::test::registerTestArithIndexCastLowering();
 #if MLIR_ENABLE_PDL_IN_PATTERNMATCH
   mlir::test::registerTestDialectConversionPasses();
   mlir::test::registerTestPDLByteCodePass();
