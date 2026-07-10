@@ -164,6 +164,7 @@ void registerTestVectorReductionToSPIRVDotProd();
 void registerTestVulkanRunnerPipeline();
 void registerTestWrittenToPass();
 void registerTestXeGPULowerings();
+void registerTestToy2ToArithPass(); 
 #if MLIR_ENABLE_PDL_IN_PATTERNMATCH
 void registerTestDialectConversionPasses();
 void registerTestPDLByteCodePass();
@@ -179,6 +180,7 @@ void registerTestTilingInterfaceTransformDialectExtension(DialectRegistry &);
 void registerTestTransformDialectExtension(DialectRegistry &);
 void registerIrdlTestDialect(DialectRegistry &);
 void registerTestTransformsTransformDialectExtension(DialectRegistry &);
+void registerToy2Dialect(DialectRegistry &);
 } // namespace test
 
 #ifdef MLIR_INCLUDE_TESTS
@@ -314,6 +316,7 @@ static void registerTestPasses() {
   mlir::test::registerTestVulkanRunnerPipeline();
   mlir::test::registerTestWrittenToPass();
   mlir::test::registerTestXeGPULowerings();
+  mlir::test::registerTestToy2ToArithPass();
 #if MLIR_ENABLE_PDL_IN_PATTERNMATCH
   mlir::test::registerTestDialectConversionPasses();
   mlir::test::registerTestPDLByteCodePass();
@@ -343,6 +346,7 @@ int main(int argc, char **argv) {
   ::test::registerTestTilingInterfaceTransformDialectExtension(registry);
   ::test::registerTestTransformDialectExtension(registry);
   ::test::registerTestTransformsTransformDialectExtension(registry);
+  ::test::registerToy2Dialect(registry);
 #endif
   return mlir::asMainReturnCode(mlir::MlirOptMain(
       argc, argv, "MLIR modular optimizer driver\n", registry));

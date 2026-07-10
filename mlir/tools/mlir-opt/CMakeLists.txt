@@ -47,6 +47,8 @@ if(MLIR_INCLUDE_TESTS)
     MLIRXeGPUTestPasses
     MLIRTestVectorToSPIRV
     MLIRLLVMTestPasses
+    MLIRToy2
+    MLIRToy2ToArithTestPasses
     )
   set(test_libs ${test_libs}
     MLIRTestPDLL
